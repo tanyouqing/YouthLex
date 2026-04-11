@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "model_name": "BAAI/bge-small-zh-v1.5",
+  "vector_dim": 512,
+  "record_count": 36,
+  "knowledge_dir": "D:\\tencentKAIWU\\Debate_partner\\knowledge",
+  "built_at": "2026-04-09T19:10:32.714857",
+  "files": [
+    {
+      "path": "D:\\tencentKAIWU\\Debate_partner\\knowledge\\cases\\cases.demo.jsonl",
+      "sha256": "cfcb7105aec05678dff33dae3654be1ff65f8add899ef781150d0fb2f3a4816e",
+      "size": 10811,
+      "mtime": 1775534047.5717916
+    },
+    {
+      "path": "D:\\tencentKAIWU\\Debate_partner\\knowledge\\issue_rules\\issue_rules.demo.jsonl",
+      "sha256": "3f2a99e6953889dcafc68770bab871f99f33aebb2958b362d71fdf67d1377cb1",
+      "size": 9665,
+      "mtime": 1775534076.0696807
+    },
+    {
+      "path": "D:\\tencentKAIWU\\Debate_partner\\knowledge\\rebuttal_templates\\rebuttal_templates.demo.jsonl",
+      "sha256": "106c8a89737c942b73cc597d36f7b80d8d17cd4b8f45ac7800d3f0afd340055d",
+      "size": 10586,
+      "mtime": 1775534099.776912
+    },
+    {
+      "path": "D:\\tencentKAIWU\\Debate_partner\\knowledge\\statutes\\statutes.demo.jsonl",
+      "sha256": "4e22eb4b3114ae86982e0323b89358e2c4e11620e25151a4dd0fa9f0763ab401",
+      "size": 10879,
+      "mtime": 1775534019.6400266
+    }
+  ],
+  "cache_paths": {
+    "HF_HOME": "D:\\tencentKAIWU\\Debate_partner\\.model_cache\\hf_home",
+    "SENTENCE_TRANSFORMERS_HOME": "D:\\tencentKAIWU\\Debate_partner\\.model_cache\\sentence_transformers",
+    "TRANSFORMERS_CACHE": "D:\\tencentKAIWU\\Debate_partner\\.model_cache\\transformers",
+    "TORCH_HOME": "D:\\tencentKAIWU\\Debate_partner\\.model_cache\\torch",
+    "XDG_CACHE_HOME": "D:\\tencentKAIWU\\Debate_partner\\.model_cache\\xdg"
+  }
+}

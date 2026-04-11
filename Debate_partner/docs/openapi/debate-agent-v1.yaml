@@ -1,0 +1,505 @@
+openapi: 3.0.3
+info:
+  title: Debate Partner API
+  version: v1
+  description: |
+    Debate Partner 前后端联调用 API 契约（v1）。
+    说明：当前仓库已提供 FastAPI 实现，本文档与实现同步维护。
+servers:
+  - url: /api/v1
+    description: Relative base path for v1
+tags:
+  - name: Health
+    description: Service health endpoints
+  - name: Sessions
+    description: Session and turn management
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+              example:
+                status: ok
+                service: debate-agent
+                version: v1
+                timestamp: '2026-04-09T10:20:00+08:00'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions:
+    post:
+      tags: [Sessions]
+      summary: Create a new session
+      operationId: createSession
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+            example:
+              case_background: 学生租房退租后，房东拒绝返还押金并主张维修费用。
+              scenario_hint: rental_dispute
+              max_rounds: 5
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionEnvelope'
+              example:
+                session:
+                  session_id: session_01HXYZABC
+                  case_background: 学生租房退租后，房东拒绝返还押金并主张维修费用。
+                  scenario_hint: rental_dispute
+                  max_rounds: 5
+                  round_index: 0
+                  ui_action: send
+                  should_end: false
+                  end_reason: ''
+                  end_reason_code: IN_PROGRESS
+                  assistant_brief: ''
+                  assistant_detail: ''
+                  attack_target: ''
+                  attack_target_category: ''
+                  attack_target_reason: ''
+                  attack_target_source: null
+                  retrieval_mode: keyword_fallback
+                  knowledge_sufficiency: true
+                  knowledge_missing_aspects: []
+                  counterargument_structured: {}
+                  counterargument_citations: {}
+                  counterargument_quality_flags: []
+                  report_source: null
+                  report_quality_flags: []
+                  history_count: 0
+                  updated_at: '2026-04-09T10:00:00+08:00'
+                  report: null
+        '400':
+          description: Invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{session_id}:
+    get:
+      tags: [Sessions]
+      summary: Get current session state
+      operationId: getSession
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Session state found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionEnvelope'
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: SESSION_NOT_FOUND
+                  message: session_id does not exist
+                  details:
+                    session_id: session_01HXYZ_MISSING
+                trace_id: trace_01HZ404
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sessions/{session_id}/turn:
+    post:
+      tags: [Sessions]
+      summary: Run one turn for a session
+      description: One call processes one action and then returns.
+      operationId: runTurn
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TurnRequest'
+            examples:
+              send:
+                summary: Send a user message
+                value:
+                  action: send
+                  user_text: 我主张房东应退还押金。
+              end:
+                summary: End the session
+                value:
+                  action: end
+                  user_text: ''
+      responses:
+        '200':
+          description: Turn completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionEnvelope'
+        '400':
+          description: Invalid argument
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: INVALID_ARGUMENT
+                  message: action must be one of send,end
+                  details:
+                    field: action
+                trace_id: trace_01HZ400
+        '404':
+          description: Session not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Session already ended
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                error:
+                  code: SESSION_ALREADY_ENDED
+                  message: cannot send new turn after session ended
+                  details:
+                    session_id: session_01HXYZABC
+                trace_id: trace_01HZ409
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  parameters:
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      description: Session identifier
+      schema:
+        type: string
+        minLength: 1
+  schemas:
+    CreateSessionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        case_background:
+          type: string
+          maxLength: 4000
+          description: Case background text
+          default: 学生租房退租后，房东拒绝返还押金并主张维修费用。
+        scenario_hint:
+          type: string
+          maxLength: 128
+          description: Scenario key for retrieval hint
+          default: rental_dispute
+        max_rounds:
+          type: integer
+          minimum: 1
+          maximum: 20
+          default: 5
+          description: Maximum rounds allowed
+    TurnAction:
+      type: string
+      enum: [send, end]
+    AttackTargetCategory:
+      type: string
+      enum:
+        - 法律依据不足
+        - 证据链薄弱
+        - 因果链不完整
+        - 损失计算不充分
+        - 规则适用错误
+        - 程序或主体适格瑕疵
+        - 论点信息不足
+    AttackTargetSource:
+      type: string
+      enum: [llm, fallback, reranked]
+    RetrievalMode:
+      type: string
+      enum: [vector, keyword_fallback]
+    EndReasonCode:
+      type: string
+      enum: [IN_PROGRESS, USER_ENDED, MAX_ROUNDS_REACHED]
+    ReportSource:
+      type: string
+      enum: [llm, fallback]
+    TurnRequest:
+      type: object
+      additionalProperties: false
+      required: [action]
+      properties:
+        action:
+          $ref: '#/components/schemas/TurnAction'
+        user_text:
+          type: string
+          maxLength: 4000
+          default: ''
+          description: User input for current turn. For end action can be empty.
+    DebateReport:
+      type: object
+      additionalProperties: false
+      properties:
+        debate_background:
+          type: string
+        user_claim_summary:
+          type: array
+          items:
+            type: string
+        defendant_rebuttal_points:
+          type: array
+          items:
+            type: string
+        user_strengths:
+          type: array
+          items:
+            type: string
+        user_weaknesses:
+          type: array
+          items:
+            type: string
+        evidence_improvement_suggestions:
+          type: array
+          items:
+            type: string
+        legal_argument_suggestions:
+          type: array
+          items:
+            type: string
+        overall_score:
+          type: integer
+          minimum: 0
+          maximum: 100
+        end_reason:
+          type: string
+    CounterargumentStructured:
+      type: object
+      additionalProperties: false
+      properties:
+        claim_summary:
+          type: string
+        core_rebuttal:
+          type: string
+        legal_basis:
+          type: string
+        case_strategy:
+          type: string
+        evidence_challenge:
+          type: string
+        logic_challenge:
+          type: string
+        support_gap_notes:
+          type: array
+          items:
+            type: string
+    CounterargumentCitations:
+      type: object
+      additionalProperties: false
+      properties:
+        claim_summary:
+          type: array
+          items:
+            type: string
+        core_rebuttal:
+          type: array
+          items:
+            type: string
+        legal_basis:
+          type: array
+          items:
+            type: string
+        case_strategy:
+          type: array
+          items:
+            type: string
+        evidence_challenge:
+          type: array
+          items:
+            type: string
+        logic_challenge:
+          type: array
+          items:
+            type: string
+    SessionStateSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - session_id
+        - case_background
+        - scenario_hint
+        - max_rounds
+        - round_index
+        - ui_action
+        - should_end
+        - end_reason
+        - end_reason_code
+        - assistant_brief
+        - assistant_detail
+        - attack_target
+        - attack_target_category
+        - attack_target_reason
+        - attack_target_source
+        - retrieval_mode
+        - knowledge_sufficiency
+        - knowledge_missing_aspects
+        - history_count
+        - updated_at
+      properties:
+        session_id:
+          type: string
+        case_background:
+          type: string
+        scenario_hint:
+          type: string
+        max_rounds:
+          type: integer
+          minimum: 1
+          maximum: 20
+        round_index:
+          type: integer
+          minimum: 0
+        ui_action:
+          $ref: '#/components/schemas/TurnAction'
+        should_end:
+          type: boolean
+        end_reason:
+          type: string
+        end_reason_code:
+          $ref: '#/components/schemas/EndReasonCode'
+        assistant_brief:
+          type: string
+        assistant_detail:
+          type: string
+        attack_target:
+          type: string
+          description: Human-readable attack focus for this turn
+        attack_target_category:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AttackTargetCategory'
+        attack_target_reason:
+          type: string
+          description: Why this category is selected
+        attack_target_source:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AttackTargetSource'
+        retrieval_mode:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/RetrievalMode'
+        knowledge_sufficiency:
+          type: boolean
+        knowledge_missing_aspects:
+          type: array
+          items:
+            type: string
+        counterargument_structured:
+          $ref: '#/components/schemas/CounterargumentStructured'
+        counterargument_citations:
+          $ref: '#/components/schemas/CounterargumentCitations'
+        counterargument_quality_flags:
+          type: array
+          items:
+            type: string
+        report_source:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ReportSource'
+        report_quality_flags:
+          type: array
+          items:
+            type: string
+        history_count:
+          type: integer
+          minimum: 0
+          description: Derived from debate_history length
+        updated_at:
+          type: string
+          format: date-time
+        report:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/DebateReport'
+    SessionEnvelope:
+      type: object
+      additionalProperties: false
+      required: [session]
+      properties:
+        session:
+          $ref: '#/components/schemas/SessionStateSummary'
+    ErrorBody:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: Stable error code for frontend branching
+          examples: [INVALID_ARGUMENT, SESSION_NOT_FOUND, SESSION_ALREADY_ENDED, INTERNAL_ERROR]
+        message:
+          type: string
+        details:
+          type: object
+          nullable: true
+          additionalProperties: true
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required: [error, trace_id]
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorBody'
+        trace_id:
+          type: string
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required: [status, service, version, timestamp]
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        service:
+          type: string
+          example: debate-agent
+        version:
+          type: string
+          example: v1
+        timestamp:
+          type: string
+          format: date-time

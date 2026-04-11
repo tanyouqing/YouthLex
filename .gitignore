@@ -1,0 +1,27 @@
+# Ignore environment and secret configuration files in all directories
+.env
+.env.*
+**/.env
+**/.env.*
+
+# Ignore competition submission materials
+比赛提交内容/
+
+# Ignore Python caches and virtual environments
+**/__pycache__/
+**/.pytest_cache/
+**/.venv/
+*.pyc
+
+# Ignore Node / Next.js dependencies and build artifacts
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
+**/*.tsbuildinfo
+
+# Ignore local tool metadata and nested repositories
+**/.git/
+**/.agents/
+**/.model_cache/
+.git-nested-backups/

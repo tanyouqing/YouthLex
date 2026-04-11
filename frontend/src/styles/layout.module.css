@@ -1,0 +1,160 @@
+.container {
+  display: flex;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.mainColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 360px;
+}
+
+.headerBar {
+  height: 60px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background-color: var(--bg-secondary);
+}
+
+.headerLeft {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+}
+
+.homeBtn {
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.1rem;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.titleFull {
+  display: inline;
+}
+
+.titleShort {
+  display: none;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.healthWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.statsDivider {
+  border-left: 1px solid var(--border);
+  height: 20px;
+  margin: 0 8px;
+}
+
+.roundStat {
+  font-weight: 700;
+}
+
+.healthIndicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+}
+
+.healthOk {
+  background-color: var(--success);
+}
+
+.healthErr {
+  background-color: var(--error);
+}
+
+.healthUnknown {
+  background-color: var(--warning);
+}
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+    overflow: auto;
+  }
+
+  .mainColumn {
+    min-width: 0;
+    order: 1;
+    min-height: 60dvh;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerBar {
+    height: auto;
+    min-height: 56px;
+    padding: 8px 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .headerLeft {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .titleFull {
+    display: none;
+  }
+
+  .titleShort {
+    display: inline;
+  }
+
+  .stats {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 0.75rem;
+  }
+
+  .statsDivider {
+    display: none;
+  }
+
+  .homeBtn {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+}

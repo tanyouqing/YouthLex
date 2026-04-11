@@ -1,0 +1,40 @@
+{
+  "query_id": "ec84b7c893c60586e55fe404094d8e18",
+  "total_count": 27,
+  "total_page": 9,
+  "items": [
+    {
+      "id": "8e54606b411802265b22cb77b5045249e9b9fed7c772cb6654466aba981b67232a4664200845d133aa10632fe5cd3397134ac0aa10ae91bff002614f218e7004",
+      "title": "深圳市房地产市场监管办法",
+      "publisher": "广东省深圳市人民政府",
+      "publish_date": "2017-02-08",
+      "active_date": "2017-02-08",
+      "timeliness": "有效",
+      "level": "地方政府规章",
+      "issued_no": "深圳市人民政府令第293号",
+      "highlights": []
+    },
+    {
+      "id": "bb598537f9a76c231d71dfb7081eb0659a7d1b454268dde4514f1cfec1be55d9c90c20eef24af6f6c714f3d063c4ef542cce70284355889add23d78fa30bd29b",
+      "title": "深圳经济特区房地产登记条例(2021修正)",
+      "publisher": "广东省深圳市人大及其常委会",
+      "publish_date": "2021-10-30",
+      "active_date": "2021-10-30",
+      "timeliness": "有效",
+      "level": "经济特区法规",
+      "issued_no": "深圳市第7届人民代表大会常务委员会公告第26号",
+      "highlights": []
+    },
+    {
+      "id": "6664d1ff58cd2d2a17a00f4b2101fef93e985f12dfc7ee73c027d2c05d27cd54d17afa5b5f549fdebeac591ce09000aaf3bcade67a013533ef80cf2e42424122",
+      "title": "深圳市房地产登记若干规定(试行)(2022修正)",
+      "publisher": "广东省深圳市人民政府",
+      "publish_date": "2022-03-03",
+      "active_date": "2022-03-03",
+      "timeliness": "有效",
+      "level": "地方政府规章",
+      "issued_no": "深圳市人民政府令第342号",
+      "highlights": []
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "pageNo": 1,
+  "pageSize": 3,
+  "sortField": "correlation",
+  "sortOrder": "desc",
+  "condition": {
+    "keywords": [
+      "深圳市房地产相关的法律规定有哪些？"
+    ],
+    "fieldName": "semantic"
+  }
+}

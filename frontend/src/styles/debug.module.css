@@ -1,0 +1,78 @@
+.debugContainer {
+  border-top: 1px solid var(--border);
+  background-color: var(--bg-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.debugHeader {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: var(--bg-sidebar);
+  border-bottom: 1px solid var(--border);
+}
+
+.toggleBtn {
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-weight: bold;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.toggleBtn:hover {
+  color: var(--text-primary);
+}
+
+.debugContent {
+  padding: 16px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.debugSection {
+  border: 1px solid var(--border-light);
+  padding: 8px;
+  background: var(--bg-primary);
+}
+
+.debugTitle {
+  font-weight: bold;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.debugRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.debugLabel {
+  color: var(--text-secondary);
+}
+
+.debugVal {
+  color: var(--text-primary);
+  font-weight: bold;
+  word-break: break-word;
+  max-width: 60%;
+  text-align: right;
+}
+
+.jsonViewer {
+  grid-column: 1 / -1;
+  background: var(--bg-secondary);
+  padding: 8px;
+  border: 1px solid var(--border-light);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
