@@ -25,3 +25,4 @@
 **/.agents/
 **/.model_cache/
 .git-nested-backups/
+output/

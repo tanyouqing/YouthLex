@@ -1,4 +1,12 @@
-# 青律 YouthLex
+<p align="center">
+  <img src="./docs/assets/readme/logo.jpg" alt="YouthLex Logo" width="260" />
+</p>
+
+<h1 align="center">青律 YouthLex</h1>
+
+<p align="center">
+  面向高校场景的双模块法律智能体系统
+</p>
 
 面向高校场景的双模块法律智能体系统，围绕两个真实且高频的问题展开：
 
@@ -10,6 +18,30 @@
 ## 在线体验
 
 - 公网地址：[http://118.31.125.31/](http://118.31.125.31/)
+
+## 项目展示
+
+### 封面图
+
+<p align="center">
+  <img src="./docs/assets/readme/logo.jpg" alt="YouthLex Cover" width="320" />
+</p>
+
+### 模块架构图
+
+#### 维权小助手架构
+
+![Law Assistant Architecture](./docs/assets/readme/law-assistant-architecture.png)
+
+#### 辩论陪练架构
+
+![Debate Partner Architecture](./docs/assets/readme/debate-partner-architecture.png)
+
+### 演示截图
+
+#### 公网首页展示
+
+![YouthLex Demo Homepage](./docs/assets/readme/demo-homepage.png)
 
 ## 核心模块
 
